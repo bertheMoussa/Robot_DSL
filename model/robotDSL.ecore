@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="robotDSL" nsURI="http://www.example.org/robotDSL" nsPrefix="robotDSL">
-  <eClassifiers xsi:type="ecore:EClass" name="RobotProgramm" abstract="true" interface="true">
+  <eClassifiers xsi:type="ecore:EClass" name="RobotProgramm">
     <eStructuralFeatures xsi:type="ecore:EReference" name="instruction" upperBound="-1"
         eType="#//Instruction" containment="true"/>
   </eClassifiers>
@@ -12,10 +12,6 @@
   <eClassifiers xsi:type="ecore:EClass" name="Instruction" abstract="true">
     <eOperations name="run"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="RotateInstruction" eSuperTypes="#//Instruction">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="angle" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="CensorInstruction" eSuperTypes="#//Instruction"/>
   <eClassifiers xsi:type="ecore:EClass" name="ControlStructure" abstract="true" eSuperTypes="#//Instruction">
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" upperBound="-1"
         eType="#//Expression" containment="true"/>
@@ -35,8 +31,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="block" lowerBound="1" upperBound="-1"
         eType="#//Block" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Fonction">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="block" upperBound="-1"
+  <eClassifiers xsi:type="ecore:EClass" name="Fonction" eSuperTypes="#//Instruction">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="block" lowerBound="1" upperBound="-1"
         eType="#//Block" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
@@ -50,8 +46,8 @@
         eType="#//Expression" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ClasseType" abstract="true" eSuperTypes="#//Expression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="vardeclaration" upperBound="-1"
-        eType="#//VarDeclaration" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="vardeclaration" lowerBound="1"
+        upperBound="-1" eType="#//VarDeclaration" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ProcCall" eSuperTypes="#//Expression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" upperBound="-1"
@@ -71,18 +67,18 @@
   <eClassifiers xsi:type="ecore:EClass" name="Mult" eSuperTypes="#//BasicArithmetics"/>
   <eClassifiers xsi:type="ecore:EClass" name="Equals" eSuperTypes="#//BasicArithmetics"/>
   <eClassifiers xsi:type="ecore:EClass" name="Minus" eSuperTypes="#//BasicArithmetics"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Boolean" abstract="true" eSuperTypes="#//ClasseType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Boolean" eSuperTypes="#//ClasseType"/>
   <eClassifiers xsi:type="ecore:EClass" name="Constant" eSuperTypes="#//ClasseType"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Number" eSuperTypes="#//ClasseType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Number" eSuperTypes="#//ClasseType">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Time" eSuperTypes="#//ClasseType"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Not" eSuperTypes="#//Boolean"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Or" eSuperTypes="#//Boolean"/>
-  <eClassifiers xsi:type="ecore:EClass" name="And" eSuperTypes="#//Boolean"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Not" eSuperTypes="#//BasicArithmetics"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Or" eSuperTypes="#//BasicArithmetics"/>
+  <eClassifiers xsi:type="ecore:EClass" name="And" eSuperTypes="#//BasicArithmetics"/>
   <eClassifiers xsi:type="ecore:EClass" name="Primitive" abstract="true" eSuperTypes="#//Expression"/>
   <eClassifiers xsi:type="ecore:EClass" name="Forward" eSuperTypes="#//Primitive"/>
   <eClassifiers xsi:type="ecore:EClass" name="Back" eSuperTypes="#//Primitive"/>
-  <eClassifiers xsi:type="ecore:EClass" name="PenUp" eSuperTypes="#//Primitive"/>
-  <eClassifiers xsi:type="ecore:EClass" name="PenDown" eSuperTypes="#//Primitive"/>
   <eClassifiers xsi:type="ecore:EClass" name="Right" eSuperTypes="#//Primitive"/>
   <eClassifiers xsi:type="ecore:EClass" name="Clock" eSuperTypes="#//Primitive"/>
   <eClassifiers xsi:type="ecore:EClass" name="Left" eSuperTypes="#//Primitive"/>
@@ -94,4 +90,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Mn" eSuperTypes="#//Distance"/>
   <eClassifiers xsi:type="ecore:EClass" name="Cm" eSuperTypes="#//Distance"/>
+  <eClassifiers xsi:type="ecore:EClass" name="RotateInstruction" eSuperTypes="#//Primitive">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="angle" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CensorInstruction" eSuperTypes="#//Primitive"/>
 </ecore:EPackage>

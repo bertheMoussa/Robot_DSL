@@ -18,10 +18,6 @@
     <genClasses ecoreClass="robotDSL.ecore#//Instruction">
       <genOperations ecoreOperation="robotDSL.ecore#//Instruction/run"/>
     </genClasses>
-    <genClasses ecoreClass="robotDSL.ecore#//RotateInstruction">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute robotDSL.ecore#//RotateInstruction/angle"/>
-    </genClasses>
-    <genClasses ecoreClass="robotDSL.ecore#//CensorInstruction"/>
     <genClasses ecoreClass="robotDSL.ecore#//ControlStructure">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference robotDSL.ecore#//ControlStructure/expression"/>
     </genClasses>
@@ -69,7 +65,9 @@
     <genClasses ecoreClass="robotDSL.ecore#//Minus"/>
     <genClasses ecoreClass="robotDSL.ecore#//Boolean"/>
     <genClasses ecoreClass="robotDSL.ecore#//Constant"/>
-    <genClasses ecoreClass="robotDSL.ecore#//Number"/>
+    <genClasses ecoreClass="robotDSL.ecore#//Number">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute robotDSL.ecore#//Number/value"/>
+    </genClasses>
     <genClasses ecoreClass="robotDSL.ecore#//Time"/>
     <genClasses ecoreClass="robotDSL.ecore#//Not"/>
     <genClasses ecoreClass="robotDSL.ecore#//Or"/>
@@ -77,8 +75,6 @@
     <genClasses ecoreClass="robotDSL.ecore#//Primitive"/>
     <genClasses ecoreClass="robotDSL.ecore#//Forward"/>
     <genClasses ecoreClass="robotDSL.ecore#//Back"/>
-    <genClasses ecoreClass="robotDSL.ecore#//PenUp"/>
-    <genClasses ecoreClass="robotDSL.ecore#//PenDown"/>
     <genClasses ecoreClass="robotDSL.ecore#//Right"/>
     <genClasses ecoreClass="robotDSL.ecore#//Clock"/>
     <genClasses ecoreClass="robotDSL.ecore#//Left"/>
@@ -89,5 +85,9 @@
     </genClasses>
     <genClasses ecoreClass="robotDSL.ecore#//Mn"/>
     <genClasses ecoreClass="robotDSL.ecore#//Cm"/>
+    <genClasses ecoreClass="robotDSL.ecore#//RotateInstruction">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute robotDSL.ecore#//RotateInstruction/angle"/>
+    </genClasses>
+    <genClasses ecoreClass="robotDSL.ecore#//CensorInstruction"/>
   </genPackages>
 </genmodel:GenModel>
