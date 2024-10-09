@@ -13,7 +13,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference robotDSL.ecore#//RobotProgramm/instruction"/>
     </genClasses>
     <genClasses ecoreClass="robotDSL.ecore#//MoveInstruction">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute robotDSL.ecore#//MoveInstruction/distance"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference robotDSL.ecore#//MoveInstruction/distance"/>
     </genClasses>
     <genClasses ecoreClass="robotDSL.ecore#//Instruction">
       <genOperations ecoreOperation="robotDSL.ecore#//Instruction/run"/>
@@ -83,5 +83,11 @@
     <genClasses ecoreClass="robotDSL.ecore#//Clock"/>
     <genClasses ecoreClass="robotDSL.ecore#//Left"/>
     <genClasses ecoreClass="robotDSL.ecore#//Clear"/>
+    <genClasses ecoreClass="robotDSL.ecore#//Distance">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute robotDSL.ecore#//Distance/value"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference robotDSL.ecore#//Distance/moveinstruction"/>
+    </genClasses>
+    <genClasses ecoreClass="robotDSL.ecore#//Mn"/>
+    <genClasses ecoreClass="robotDSL.ecore#//Cm"/>
   </genPackages>
 </genmodel:GenModel>

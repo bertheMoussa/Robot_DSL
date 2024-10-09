@@ -6,7 +6,8 @@
         eType="#//Instruction" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MoveInstruction" eSuperTypes="#//Instruction">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="distance" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="distance" lowerBound="1"
+        eType="#//Distance" eOpposite="#//Distance/moveinstruction"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Instruction" abstract="true">
     <eOperations name="run"/>
@@ -23,7 +24,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="speed" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RepeatInstruction" eSuperTypes="#//ControlStructure">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="block" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="block" lowerBound="1" upperBound="-1"
         eType="#//Block" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="LoopInstruction" eSuperTypes="#//ControlStructure">
@@ -31,7 +32,7 @@
         eType="#//Block" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IfInstruction" eSuperTypes="#//ControlStructure">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="block" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="block" lowerBound="1" upperBound="-1"
         eType="#//Block" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Fonction">
@@ -86,4 +87,11 @@
   <eClassifiers xsi:type="ecore:EClass" name="Clock" eSuperTypes="#//Primitive"/>
   <eClassifiers xsi:type="ecore:EClass" name="Left" eSuperTypes="#//Primitive"/>
   <eClassifiers xsi:type="ecore:EClass" name="Clear" eSuperTypes="#//Primitive"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Distance" abstract="true" eSuperTypes="#//ClasseType">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="moveinstruction" eType="#//MoveInstruction"
+        eOpposite="#//MoveInstruction/distance"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Mn" eSuperTypes="#//Distance"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Cm" eSuperTypes="#//Distance"/>
 </ecore:EPackage>
