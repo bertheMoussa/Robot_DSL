@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel"
+    modelDirectory="/robotDSL/src-gen" creationIcons="false" editDirectory="/robotDSL.edit/src-gen"
+    editorDirectory="/robotDSL.editor/src-gen" modelPluginID="robotDSL" modelName="RobotDSL"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" codeFormatting="true"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0" copyrightFields="false"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>robotDSL.ecore</foreignModel>
+  <testsDirectory xsi:nil="true"/>
+  <genPackages prefix="RobotDSL" disposableProviderFactory="true" ecorePackage="robotDSL.ecore#/">
+    <genClasses ecoreClass="robotDSL.ecore#//RobotProgramm">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference robotDSL.ecore#//RobotProgramm/instruction"/>
+    </genClasses>
+    <genClasses ecoreClass="robotDSL.ecore#//MoveInstruction">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute robotDSL.ecore#//MoveInstruction/distance"/>
+    </genClasses>
+    <genClasses ecoreClass="robotDSL.ecore#//Instruction">
+      <genOperations ecoreOperation="robotDSL.ecore#//Instruction/run"/>
+    </genClasses>
+    <genClasses ecoreClass="robotDSL.ecore#//RotateInstruction">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute robotDSL.ecore#//RotateInstruction/angle"/>
+    </genClasses>
+    <genClasses ecoreClass="robotDSL.ecore#//CensorInstruction"/>
+    <genClasses ecoreClass="robotDSL.ecore#//ControlStructure">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference robotDSL.ecore#//ControlStructure/expression"/>
+    </genClasses>
+    <genClasses ecoreClass="robotDSL.ecore#//SetSpeedInstruction">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute robotDSL.ecore#//SetSpeedInstruction/speed"/>
+    </genClasses>
+    <genClasses ecoreClass="robotDSL.ecore#//RepeatInstruction">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference robotDSL.ecore#//RepeatInstruction/block"/>
+    </genClasses>
+    <genClasses ecoreClass="robotDSL.ecore#//LoopInstruction">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference robotDSL.ecore#//LoopInstruction/block"/>
+    </genClasses>
+    <genClasses ecoreClass="robotDSL.ecore#//IfInstruction">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference robotDSL.ecore#//IfInstruction/block"/>
+    </genClasses>
+    <genClasses ecoreClass="robotDSL.ecore#//Fonction">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference robotDSL.ecore#//Fonction/block"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute robotDSL.ecore#//Fonction/name"/>
+    </genClasses>
+    <genClasses ecoreClass="robotDSL.ecore#//Block">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference robotDSL.ecore#//Block/instruction"/>
+    </genClasses>
+    <genClasses ecoreClass="robotDSL.ecore#//Expression"/>
+    <genClasses ecoreClass="robotDSL.ecore#//BasicArithmetics">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference robotDSL.ecore#//BasicArithmetics/expression"/>
+    </genClasses>
+    <genClasses ecoreClass="robotDSL.ecore#//ClasseType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference robotDSL.ecore#//ClasseType/vardeclaration"/>
+    </genClasses>
+    <genClasses ecoreClass="robotDSL.ecore#//ProcCall">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference robotDSL.ecore#//ProcCall/expression"/>
+    </genClasses>
+    <genClasses ecoreClass="robotDSL.ecore#//Parameter">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference robotDSL.ecore#//Parameter/fonction"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute robotDSL.ecore#//Parameter/name"/>
+    </genClasses>
+    <genClasses ecoreClass="robotDSL.ecore#//Affectation"/>
+    <genClasses ecoreClass="robotDSL.ecore#//VarDeclaration"/>
+    <genClasses ecoreClass="robotDSL.ecore#//Div"/>
+    <genClasses ecoreClass="robotDSL.ecore#//Plus"/>
+    <genClasses ecoreClass="robotDSL.ecore#//Lower"/>
+    <genClasses ecoreClass="robotDSL.ecore#//Greater"/>
+    <genClasses ecoreClass="robotDSL.ecore#//Mult"/>
+    <genClasses ecoreClass="robotDSL.ecore#//Equals"/>
+    <genClasses ecoreClass="robotDSL.ecore#//Minus"/>
+    <genClasses ecoreClass="robotDSL.ecore#//Boolean"/>
+    <genClasses ecoreClass="robotDSL.ecore#//Constant"/>
+    <genClasses ecoreClass="robotDSL.ecore#//Number"/>
+    <genClasses ecoreClass="robotDSL.ecore#//Time"/>
+    <genClasses ecoreClass="robotDSL.ecore#//Not"/>
+    <genClasses ecoreClass="robotDSL.ecore#//Or"/>
+    <genClasses ecoreClass="robotDSL.ecore#//And"/>
+    <genClasses ecoreClass="robotDSL.ecore#//Primitive"/>
+    <genClasses ecoreClass="robotDSL.ecore#//Forward"/>
+    <genClasses ecoreClass="robotDSL.ecore#//Back"/>
+    <genClasses ecoreClass="robotDSL.ecore#//PenUp"/>
+    <genClasses ecoreClass="robotDSL.ecore#//PenDown"/>
+    <genClasses ecoreClass="robotDSL.ecore#//Right"/>
+    <genClasses ecoreClass="robotDSL.ecore#//Clock"/>
+    <genClasses ecoreClass="robotDSL.ecore#//Left"/>
+    <genClasses ecoreClass="robotDSL.ecore#//Clear"/>
+  </genPackages>
+</genmodel:GenModel>
