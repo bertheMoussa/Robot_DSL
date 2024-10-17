@@ -60,7 +60,7 @@
                     "robotDSL",
                     "robot-dsl"
                 ],
-                "extensions": [".txt"],
+                "extensions": [".robot"],
                 "configuration": "./language-configuration.json"
             }
         ],

@@ -3,7 +3,7 @@
     "languages": [{
         "id": "robot-dsl",
         "grammar": "src/language/robot-dsl.langium",
-        "fileExtensions": [".txt"],
+        "fileExtensions": [".robot"],
         "textMate": {
             "out": "syntaxes/robot-dsl.tmLanguage.json"
         },

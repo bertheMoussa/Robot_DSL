@@ -1,4 +1,4 @@
-import type { Model } from '../language/generated/ast.js';
+import type { RobotProgramm } from '../language/generated/ast.js';
 import chalk from 'chalk';
 import { Command } from 'commander';
 import { RobotDslLanguageMetaData } from '../language/generated/module.js';
@@ -9,7 +9,7 @@ import { NodeFileSystem } from 'langium/node';
 
 export const generateAction = async (fileName: string, opts: GenerateOptions): Promise<void> => {
     const services = createRobotDslServices(NodeFileSystem).RobotDsl;
-    const model = await extractAstNode<Model>(fileName, services);
+    const model = await extractAstNode<RobotProgramm>(fileName, services);
     const generatedFilePath = generateJavaScript(model, fileName, opts.destination);
     console.log(chalk.green(`JavaScript code generated successfully: ${generatedFilePath}`));
 };

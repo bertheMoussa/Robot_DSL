@@ -1,0 +1,290 @@
+grammar RobotDsl
+
+// Point d'entrée pour le programme du robot
+entry RobotProgram returns RobotProgramm:
+    'program' instructions+=Instruction*;
+
+Expression returns Expression:
+    BasicArithmetics | ClasseType | Primitive | Block | Parameter | VarDeclaration|CallExpression;
+
+Instruction returns Instruction:
+    ControlStructure | Fonction | Expression;
+
+ControlStructure returns ControlStructure:
+    RepeatInstruction | LoopInstruction | IfInstruction;
+
+Primitive returns Primitive:
+    RotateInstruction | SensorInstruction | MoveInstruction | SetSpeedInstruction;
+
+BasicArithmetics returns BasicArithmetics:
+    Div | Plus | Minus | Mult | Equals | Lower | Greater | Not | Or | And;
+
+// Opérations binaires avec membres gauche et droit
+Div returns Div:
+     left=Expression '/' right=Expression ;
+
+Plus returns Plus:
+      left=Expression '+' right=Expression;
+
+Minus returns Minus:
+     left=Expression '-' right=Expression ;
+
+Mult returns Mult:
+     left=Expression '*' right=Expression;
+
+Equals returns Equals:
+     left=Expression '==' right=Expression ;
+
+Lower returns Lower:
+     left=Expression '<' right=Expression ;
+
+Greater returns Greater:
+     left=Expression '>' right=Expression;
+
+// Opérations unaires (un seul opérande)
+Not returns Not:
+     '!' expression=Expression;
+
+Or returns Or:
+    'or' '(' left=Expression ',' right=Expression ')';
+
+And returns And:
+      left=Expression 'and' right=Expression ;
+
+ClasseType returns ClasseType:
+    Boolean | Constant | NumberType | Time | Distance;
+
+SensorInstruction returns SensorInstruction:
+    GetDistance | GetTime;
+
+CallExpression returns CallExpression:
+    VarCall|ProcCall;
+
+VarCall returns VarCall:
+     variable=[VarDeclaration:ID];
+
+MoveInstruction returns MoveInstruction:
+     'setdistance' '(' distance=INT unite=Distance ')';
+
+SetSpeedInstruction returns SetSpeedInstruction :
+    'setSpeed' '(' speed=INT unite=Distance ')';
+
+RepeatInstruction returns RepeatInstruction:
+    'repeat' '('instructions+=Instruction*')' block=Block;
+
+LoopInstruction returns LoopInstruction:
+    'loop' '('instructions+=Instruction*')' block=Block;
+
+IfInstruction returns IfInstruction:
+    'if' '('instructions+=Instruction*')' block=Block;
+
+Fonction returns Fonction:
+    'let' ('void')? return=ClasseType name=ID '(' (parameters+=Parameter (',' parameters+=Parameter)*)? ')' block=Block;
+
+
+Block returns Block:
+    '{' instructions+=Instruction* '}';
+
+// ClasseTypes pour les types spécifiques
+Boolean returns Boolean:
+     'boolean' (value=BOOLEAN)?;
+
+Constant returns Constant:
+    {Constant} 'constant';
+
+NumberType returns NumberType:
+    'number' (value=INT)?;
+
+Time returns Time:
+    'time' (time=Time)?;
+
+Distance returns Distance:
+    Mn | Cm;
+
+Mn returns Mn:
+     (value=INT)? 'mn';
+
+Cm returns Cm:
+    (value=INT)?  'cm';
+
+RotateInstruction returns RotateInstruction:
+    'setRotation' '(' angle=INT ')';
+
+GetDistance returns GetDistance:
+    {GetDistance} 'getDistance' '(' ')';
+
+GetTime returns GetTime:
+    {GetTime} 'getTime' '(' ')';
+
+ProcCall returns ProcCall:
+    fonction=[Fonction:ID];
+
+Parameter returns Parameter:
+    name=ID ':' type=ClasseType;
+
+VarDeclaration returns VarDeclaration:
+    'var' type=ClasseType name=ID ('=' initialization=Expression)? ;
+
+
+hidden terminal WS: /\s+/;
+terminal ID: /[_a-zA-Z][\w_]*/;
+terminal INT returns number: /[0-9]+/;
+terminal BOOLEAN returns boolean: 'true' | 'false';
+terminal STRING returns string:'"' ('\\' . |  !('\\' | '"' ))*'"'  | "'" ('\\' . |  !('\\' | "'" ))*"'"  ;
+
+hidden terminal ML_COMMENT: /\/\*[\s\S]*?\*\//;
+hidden terminal SL_COMMENT: /\/\/[^\n\r]*/;
+
+// Interface for the Robot Program
+interface RobotProgramm {
+    instructions: Instruction[];
+}
+
+// Base abstract class for Instructions
+interface Instruction {
+}
+
+// MoveInstruction inherits from Instruction
+interface MoveInstruction extends Primitive {
+    unite: Distance;
+    distance:number;
+}
+
+// ControlStructure is abstract and inherits from Instruction
+interface ControlStructure extends Instruction {
+    expressions: Expression[];
+}
+
+// SetSpeedInstruction inherits from Instruction
+interface SetSpeedInstruction extends Primitive {
+    unite:Distance;
+    speed: number;
+}
+
+// RepeatInstruction inherits from ControlStructure
+interface RepeatInstruction extends ControlStructure {
+    block: Block;
+    instructions: Instruction[];
+}
+
+// LoopInstruction inherits from ControlStructure
+interface LoopInstruction extends ControlStructure {
+    block: Block;
+    instructions: Instruction[];
+}
+
+// IfInstruction inherits from ControlStructure
+interface IfInstruction extends ControlStructure {
+    block: Block;
+    instructions: Instruction[];
+}
+
+// Fonction inherits from Instruction
+interface Fonction extends Instruction {
+    parameters: Parameter[];
+    block: Block;
+    name: string;
+    return?: ClasseType;
+}
+
+// Block contains instructions
+interface Block extends Expression {
+    instructions: Instruction[];
+}
+
+// Expression is abstract and inherits from Instruction
+interface Expression extends Instruction {}
+
+// BasicArithmetics is abstract and inherits from Expression
+// Now using left and right operands instead of expressions array
+interface BasicArithmetics extends Expression {
+    left?: Expression;
+    right?: Expression;
+}
+
+// ClasseType is abstract and inherits from Expression
+interface ClasseType extends Expression {}
+
+// ProcCall inherits from Expression
+interface ProcCall extends CallExpression {
+    expressions: Expression[];
+    fonction: @Fonction;
+}
+// VarCall inherits from Expression
+interface VarCall extends CallExpression {
+    variable: @VarDeclaration;
+}
+
+// Parameter inherits from Expression
+interface Parameter extends Expression {
+    name: string;
+    type: ClasseType;
+}
+
+/*// Affectation inherits from Expression
+interface Affectation extends Expression {
+    left: VarDeclaration;
+    right: Expression;
+}*/
+
+// VarDeclaration inherits from Expression
+interface VarDeclaration extends Expression {
+    type: ClasseType;
+    name: string;
+    initialization?:Expression;
+}
+
+// Arithmetic Operations inherit from BasicArithmetics
+// Now using left and right operands instead of expressions array
+interface Div extends BasicArithmetics {}
+interface Plus extends BasicArithmetics {}
+interface Minus extends BasicArithmetics {}
+interface Mult extends BasicArithmetics {}
+interface Equals extends BasicArithmetics {}
+interface Lower extends BasicArithmetics {}
+interface Greater extends BasicArithmetics {}
+interface Not extends BasicArithmetics {
+    expression: Expression; // Unary operation, only one operand
+}
+interface Or extends BasicArithmetics {}
+interface And extends BasicArithmetics {}
+
+// ClasseTypes for specific types
+interface Boolean extends ClasseType {
+    value:boolean;
+}
+interface Constant extends ClasseType {}
+
+// Number inherits from ClasseType
+interface NumberType extends ClasseType {
+    value: number;
+}
+
+// Time inherits from ClasseType
+interface Time extends ClasseType {
+    time?: Time;
+}
+
+// Primitive is abstract and inherits from Expression
+interface Primitive extends Expression {}
+
+// Distance is abstract and inherits from ClasseType
+interface Distance extends ClasseType {
+    value: number;
+}
+
+// Mn and Cm inherit from Distance
+interface Mn extends Distance {}
+interface Cm extends Distance {}
+
+// RotateInstruction inherits from Primitive
+interface RotateInstruction extends Primitive {
+    angle: number;
+}
+
+// SensorInstruction inherits from Primitive
+interface SensorInstruction extends Primitive {}
+interface GetDistance extends SensorInstruction {}
+interface GetTime extends SensorInstruction {}
+interface CallExpression extends Expression {
+}
