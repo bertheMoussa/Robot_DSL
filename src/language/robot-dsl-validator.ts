@@ -1,5 +1,5 @@
-import type {  ValidationChecks } from 'langium';
-import type { RobotDslAstType } from './generated/ast.js';
+import type {  ValidationAcceptor, ValidationChecks } from 'langium';
+import type { RobotDslAstType, RobotProgram } from './generated/ast.js';
 import type { RobotDslServices } from './robot-dsl-module.js';
 
 /**
@@ -9,8 +9,7 @@ export function registerValidationChecks(services: RobotDslServices) {
     const registry = services.validation.ValidationRegistry;
     const validator = services.validation.RobotDslValidator;
     const checks: ValidationChecks<RobotDslAstType> = {
-        //Person: validator.checkPersonStartsWithCapital
-    };
+        RobotProgram: validator.checkUniqueDefs,    };
     registry.register(checks, validator);
 }
 
@@ -18,6 +17,17 @@ export function registerValidationChecks(services: RobotDslServices) {
  * Implementation of custom validations.
  */
 export class RobotDslValidator {
+    checkUniqueDefs(robot: RobotProgram, accept: ValidationAcceptor): void {
+        // create a set of visited functions
+        // and report an error when we see one we've already seen
+        const reported = new Set();
+        robot.fonctions.forEach(f => {
+            if (reported.has(f.name)) {
+                accept('error',  `Function has non-unique name '${f.name}'.`,  {node: f, property: 'name'});
+            }
+            reported.add(f.name);
+        });
+    }
 
     /*checkPersonStartsWithCapital(person: Person, accept: ValidationAcceptor): void {
         if (person.name) {

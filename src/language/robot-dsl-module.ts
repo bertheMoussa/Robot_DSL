@@ -2,14 +2,18 @@ import type { DefaultSharedModuleContext, LangiumServices, LangiumSharedServices
 import { createDefaultModule, createDefaultSharedModule, inject } from 'langium';
 import { RobotDslGeneratedModule, RobotDslGeneratedSharedModule } from './generated/module.js';
 import { RobotDslValidator, registerValidationChecks } from './robot-dsl-validator.js';
+import { RobotDslAcceptWeaver, weaveAcceptMethods } from './semantics/accept-weaver.js';
 
 /**
  * Declaration of custom services - add your own service classes here.
  */
 export type RobotDslAddedServices = {
     validation: {
-        RobotDslValidator: RobotDslValidator
+        RobotDslValidator: RobotDslValidator,
+        RobotDslAcceptWeaver: RobotDslAcceptWeaver
+
     }
+    
 }
 
 /**
@@ -25,7 +29,9 @@ export type RobotDslServices = LangiumServices & RobotDslAddedServices
  */
 export const RobotDslModule: Module<RobotDslServices, PartialLangiumServices & RobotDslAddedServices> = {
     validation: {
-        RobotDslValidator: () => new RobotDslValidator()
+        RobotDslValidator: () => new RobotDslValidator(),
+        RobotDslAcceptWeaver:()=>new RobotDslAcceptWeaver()
+
     }
 };
 
@@ -57,7 +63,9 @@ export function createRobotDslServices(context: DefaultSharedModuleContext): {
         RobotDslGeneratedModule,
         RobotDslModule
     );
+    //shared.lsp.ExecuteCommandHandler = new RobotDslCommandHandler();
     shared.ServiceRegistry.register(RobotDsl);
     registerValidationChecks(RobotDsl);
+    weaveAcceptMethods(RobotDsl);
     return { shared, RobotDsl };
 }
