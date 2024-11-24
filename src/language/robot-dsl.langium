@@ -3,41 +3,52 @@ grammar RobotDsl
 import "robot-dsl-types";
 // Point d'entrée pour le programme du robot
 entry RobotProgram returns RobotProgram:
-    'program {' fonctions+=Fonction* '}';
+    'program{' fonctions+=Fonction* '}';
 
 Expression returns Expression:
-    BasicArithmetics| ClasseType | Primitive | Block | Parameter | VarDeclaration | CallExpression;
-
-// Opérations arithmétiques de base
-BasicArithmetics returns BasicArithmetics:
-    Addition| Multiplication|Affectation|PrimExpr;
-
+    Operators|ClasseType |Primitive |Block |Parameter |Fonction;
 
 // Instruction principale
 Instruction returns Instruction:
-    ControlStructure | Fonction | Expression;
+     ControlStructure|VarCall|ProcCall| CallExpression|Affectation|Value|VarDeclaration|MoveInstruction|RotateInstruction|SetSpeedInstruction|GetSpeed|GetDistance|GetTime|Value|BooleanValue;
 
 // Structures de contrôle
 ControlStructure returns ControlStructure:
-    RepeatInstruction | LoopInstruction | IfInstruction;
+    RepeatInstruction | LoopInstruction | ConditionInstruction;
 
 // Instructions primitives
 Primitive returns Primitive:
     RotateInstruction |SensorInstruction | MoveInstruction | SetSpeedInstruction;
 
+
+Value returns Value:
+	value=DOUBLE;
+
+BooleanValue returns BooleanValue:
+    value=EBoolean;
+
+EBoolean returns EBoolean:
+    TrueVal|FalseVal;
+TrueVal returns TrueVal:
+    'true';
+FalseVal returns FalseVal:
+    'false';
+
 Affectation returns Affectation:
-    left=CallExpression '=' right=Expression;
+    left=VarCall '=' right=Addition;
 
-Addition returns BasicArithmetics:
-    Multiplication (operator=Operators right=Multiplication)*;
+Addition returns Addition:
+    left=Multiplication (operators+=Operators right+=Multiplication)*;
 
-Multiplication returns BasicArithmetics: 
-    PrimExpr (operator=Operators right=PrimExpr)*;
-PrimExpr returns BasicArithmetics:
-    '('Expression')'| DOUBLE |ID;
+Multiplication returns Multiplication: 
+    left=PrimExpr (operators+=Operators right+=PrimExpr)*;
+
+PrimExpr returns PrimExpr:
+    ExpressValue=Instruction;
+
 
 Operators returns Operators:
-    Add | Minus | Mult |Div | Modulo | Equals | NotEquals | Greater | Minus | GreaterEquals | MinusEquals | And | Or | Not;
+   Sub|Add | Minus | Mult |Div | Modulo | Equals | NotEquals | Greater | Minus | GreaterEquals | MinusEquals | And | Or | Not;
 
 Greater returns Greater:
     '>';
@@ -71,8 +82,16 @@ NotEquals returns NotEquals:
 
 // Types de classe
 ClasseType returns ClasseType:
-    Boolean | Constant | NumberType | Time | Distance;
+    BooleanType | Constant | NumberType | Time;
 
+Constant returns Constant:
+    'Const';
+BooleanType returns BooleanType:
+    'boolean';
+NumberType returns NumberType:
+    'number';
+Time returns Time:
+    'time';
 // Instructions de capteur
 SensorInstruction returns SensorInstruction:
     GetDistance | GetTime |GetSpeed| GetRotation;
@@ -90,34 +109,21 @@ SetSpeedInstruction returns SetSpeedInstruction:
 
 // Structures de contrôle
 RepeatInstruction returns RepeatInstruction:
-    'repeat' condition=Addition body=Block;
+    'for' '(' initialization=VarDeclaration ';' condition=Addition ';' nextInstruction=Affectation ')' body=Block;
 
 LoopInstruction returns LoopInstruction:
-    'loop'  condition=Addition body=Block;
+    'loop'  '('condition=Addition')' body=Block;
 
-IfInstruction returns IfInstruction:
-    'if'  condition=Addition body=Block ('else' body=Block)?;
+ConditionInstruction returns ConditionInstruction:
+    'if' '('  condition=Addition ')' body=Block ('else{' elseBody+=Instruction* '}')?;
 
 // Déclaration de fonction
 Fonction returns Fonction:
-    'let' ('void')? returnValue=ClasseType? name=ID '(' (parameters+=Parameter (',' parameters+=Parameter)*)? ')' block=Block;
+    'let' ('void')? returnValue=ClasseType? name=ID '(' (parameters+=VarDeclaration (',' parameters+=VarDeclaration)*)? ')' block=Block;
 
 // Bloc d'instructions
 Block returns Block:
-    '{' instructions+=Instruction* '}';
-
-// Types de classe
-Boolean returns Boolean:
-    'boolean' (value=BOOLEAN)?;
-
-Constant returns Constant:
-    {Constant} 'constant' (value=DOUBLE)?;
-
-NumberType returns NumberType:
-    'number' ('-'?value=DOUBLE)?;
-
-Time returns Time:
-    'time' (time=Time)?;
+    '{' instructions+=Instruction* ('return' returnValue1=VarCall)?'}';
 
 Distance returns Distance:
     Mm|M|Cm;
@@ -144,7 +150,7 @@ GetRotation returns GetRotation:
 
 // Appel de procédure
 ProcCall returns ProcCall:
-    fonction=[Fonction:ID] '(' (parameters+=Expression (',' parameters+=Expression)*)? ')';
+    fonction=[Fonction:ID] '(' (parameters+=Instruction (',' parameters+=Instruction)*)? ')';
 
 // Paramètre de fonction
 Parameter returns Parameter:
@@ -152,7 +158,7 @@ Parameter returns Parameter:
 
 // Déclaration de variable
 VarDeclaration returns VarDeclaration:
-    'var' type=ClasseType name=ID ('=' initialization=Expression )? ('in' Distance)? ;
+    ('var')? type=ClasseType name=ID ('=' initialization=Addition)? ('in' Distance)? ;
 // Instructions de mouvement
 MoveInstruction returns MoveInstruction:
      movement=Direction value=Addition 'in' unite=Distance ;
@@ -180,7 +186,7 @@ hidden terminal WS: /\s+/;
 terminal ID: /[_a-zA-Z][\w_]*/;
 terminal INT returns number: /[0-9]+/;
 terminal BOOLEAN returns boolean: 'true' | 'false';
-terminal DOUBLE returns number: INT ('.' INT)?;
+terminal DOUBLE returns number: ('-')?INT ('.' INT)?;
 hidden terminal ML_COMMENT: /\/\*[\s\S]*?\*\//;
 hidden terminal SL_COMMENT: /\/\/[^\n\r]*/;
 

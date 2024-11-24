@@ -6,14 +6,12 @@ import { NodeFileSystem } from 'langium/node';
 import { arduinoCodeGenerator } from '../generator/generator.js';
 import { RobotProgram } from '../language/semantics/visitor.js';
 
-
 export const compile = async (fileName: string): Promise<void> => {
     const services = createRobotDslServices(NodeFileSystem).RobotDsl;
     const model = await extractAstNode<RobotProgram>(fileName, services);
     const arduinoCode = arduinoCodeGenerator(model);
     console.log(arduinoCode);
 };
-
 
 export type GenerateOptions = {
     destination?: string;

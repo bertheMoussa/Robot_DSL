@@ -28,7 +28,6 @@ export class RobotDslValidator {
             reported.add(f.name);
         });
     }
-
     /*checkPersonStartsWithCapital(person: Person, accept: ValidationAcceptor): void {
         if (person.name) {
             const firstChar = person.name.substring(0, 1);

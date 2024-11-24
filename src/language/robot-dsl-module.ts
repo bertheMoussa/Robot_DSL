@@ -1,8 +1,9 @@
-import type { DefaultSharedModuleContext, LangiumServices, LangiumSharedServices, Module, PartialLangiumServices } from 'langium';
-import { createDefaultModule, createDefaultSharedModule, inject } from 'langium';
+import type { DefaultSharedModuleContext, ExecuteCommandAcceptor, LangiumServices, LangiumSharedServices, Module, PartialLangiumServices } from 'langium';
+import { AbstractExecuteCommandHandler, createDefaultModule, createDefaultSharedModule, inject } from 'langium';
 import { RobotDslGeneratedModule, RobotDslGeneratedSharedModule } from './generated/module.js';
 import { RobotDslValidator, registerValidationChecks } from './robot-dsl-validator.js';
 import { RobotDslAcceptWeaver, weaveAcceptMethods } from './semantics/accept-weaver.js';
+import { parseAndGenerate, parseAndValidate } from '../web/index.js';
 
 /**
  * Declaration of custom services - add your own service classes here.
@@ -63,9 +64,20 @@ export function createRobotDslServices(context: DefaultSharedModuleContext): {
         RobotDslGeneratedModule,
         RobotDslModule
     );
-    //shared.lsp.ExecuteCommandHandler = new RobotDslCommandHandler();
+    shared.lsp.ExecuteCommandHandler = new RobotCommandLuncher();
     shared.ServiceRegistry.register(RobotDsl);
     registerValidationChecks(RobotDsl);
     weaveAcceptMethods(RobotDsl);
     return { shared, RobotDsl };
+}
+
+class RobotCommandLuncher extends AbstractExecuteCommandHandler {
+    registerCommands(acceptor: ExecuteCommandAcceptor): void {
+        acceptor('parseAndGenerate', args => {
+            return parseAndGenerate(args[0]);
+        });
+        acceptor('parseAndValidate', args => {
+            return parseAndValidate(args[0]);
+        });
+    }
 }
