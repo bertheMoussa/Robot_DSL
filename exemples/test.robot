@@ -1,7 +1,7 @@
 
 program{
 
-   let void entry () {
+   let void entry (){
     setSpeed(200 mm) // distance per second (here 200mm/s)
     var number temp = getTime()
     loop (temp<60000)
@@ -12,7 +12,7 @@ program{
         temp = getTime()
     }
    }
-   let void simpleFunction() {
+   let void simpleFunction(){
         var boolean flag = true
         var number value = 10
         if(flag){
@@ -22,12 +22,12 @@ program{
         }
     }
 
-    let number addNumbers(number a, number b) {
+    let number addNumbers(number a, number b){
         var number c= a + b
         return c
     }
 
-    let number sumLoop() {
+    let number sumLoop(){
         var number sum = 0
         for (var number i = 0; i < 5; i = i + 1){
             sum = sum + i

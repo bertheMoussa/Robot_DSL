@@ -299,7 +299,6 @@ export class CompilerVistor implements Visitor {
         return result;
     }
     
-    
 	visitGetTime(node : GetTime) : any{
         return "millis()";
     }
