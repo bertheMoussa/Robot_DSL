@@ -1,3 +1,4 @@
+
         #include <PinChangeInt.h>
         #include <PinChangeIntConfig.h>
         #include <EEPROM.h>
@@ -101,44 +102,48 @@
             Omni.setCarStop();
         }
 
-void entry()	{
+void entry(){
+
 	Omni.setCarSpeedMMPS(200);
 	float temp = millis();
 	while (temp<60000)
 	{
+
 	float dist = 1000-125;
 	forward_advance(dist);
 	rotation(90);
 	temp=millis();
 	}
 
-	}
+}
+void simpleFunction(){
 
-void simpleFunction()	{
 	bool flag = true;
 	float value = 10;
 	if(flag)
 	{
+
 	value=value+5;
-	}
-	else{
+	}else{
 	value=value-5;
 	}
 
-	}
+}
+float addNumbers(float a, float b){
 
-float addNumbers(float a, float b)	{
 	float c = a+b;
 	return c;
-	}
 
-float sumLoop()	{
+}
+float sumLoop(){
+
 	float sum = 0;
 	for(float i = 0;i<5;i=i+1)
 	{
+
 	sum=sum+i;
 	}
 	return sum;
-}
 
+}
 

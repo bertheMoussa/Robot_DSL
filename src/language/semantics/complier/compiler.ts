@@ -108,17 +108,17 @@ export class CompilerVistor implements Visitor {
 	visitRepeatInstruction(node : RepeatInstruction) : any{
         //adapter en boucle for
         return "\tfor("+this.visitVarDeclaration(node.initialization as VarDeclaration)+";"+this.visitAddition(node.condition as Addition)+";"
-                +this.visitAffectation(node.nextInstruction as Affectation)+")\n"+this.visitBlock(node.body as Block);
+                +this.visitAffectation(node.nextInstruction as Affectation)+")\n"+"\t{\n"+this.visitBlock(node.body as Block)+"\t}";
     }
 	visitLoopInstruction(node : LoopInstruction) : any{
        return "\twhile (" + this.visitAddition(node.condition as Addition) + ")\n" 
-       +this.visitBlock(node.body as Block);
+       +"\t{\n"+this.visitBlock(node.body as Block)+"\t}";
     }
 	visitConditionInstruction(node : ConditionInstruction) : any{
-        let ifStatement="\tif("+this.visitAddition(node.condition as Addition)+")\n"+this.visitBlock(node.body as Block);
+        let ifStatement="\tif("+this.visitAddition(node.condition as Addition)+")\n"+"\t{\n"+this.visitBlock(node.body as Block)+"\t}";
         let elseStatement="";
         if(node.elseBody.length>0){
-            elseStatement+="\telse"+"{\n"+node.elseBody.map(statement => "\t"+this.visitInstruction(statement as Instruction) + ";\n").join("")+ "\t}\n";
+            elseStatement+="else"+"{\n"+node.elseBody.map(statement => "\t"+this.visitInstruction(statement as Instruction) + ";\n").join("")+ "\t}";
         }
         
         return ifStatement+elseStatement;
@@ -251,7 +251,7 @@ export class CompilerVistor implements Visitor {
         }
         return returnedType+" "+node.name+"("+
         node.parameters.map(parameter => this.visitVarDeclaration(parameter)).join(", ") + ")"
-        +this.visitBlock(node.block);
+        +"{\n"+this.visitBlock(node.block as Block)+"\n}";
     }
 	visitParameter(node : Parameter) : any{
         let returnedType="";
@@ -270,7 +270,7 @@ export class CompilerVistor implements Visitor {
     }
 	visitBlock(node: Block): any {
         // Commence le bloc
-        let result = "\t{\n";
+        let result = "\n";
         // Parcours des instructions
         result += node.instructions
             .map(statement => {
@@ -292,9 +292,7 @@ export class CompilerVistor implements Visitor {
         if (node.returnValue1) {
             result += "\treturn " + this.visitVarCall(node.returnValue1 as VarCall) + ";\n";
         }
-    
-        // Ferme le bloc
-        result += "\t}\n";
+
     
         return result;
     }
