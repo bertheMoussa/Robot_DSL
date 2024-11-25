@@ -111,7 +111,6 @@ const setupSimulator = (scene) => {
 const parseAndValidate = (async () => {
     console.info('validating current code...');
     const codeEdited = client.editor.getValue();
-    alert(codeEdited)
     const errors = await vscode.commands.executeCommand('parseAndValidate', codeEdited);
     if(errors.length > 0){
         const errorModal = document.getElementById("errorModal");

@@ -51,6 +51,11 @@ Pour tester l'interpréteur, vous pouvez utiliser les programmes d'exemple dispo
 
 4. Exemple de simulation
 
+<video controls style="max-width: 900px; width: 100%;">
+  <source src="./assets/robotDslSimulation.webm" type="video/webm">
+  Votre navigateur ne supporte pas les vidéos au format webm.
+</video>
+
 ## Metatmodel
 
 <img src="./assets/robotDsl.jpg" style="max-width: 900px; width: 100%;">

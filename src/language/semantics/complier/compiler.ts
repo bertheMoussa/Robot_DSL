@@ -43,10 +43,15 @@ export class CompilerVistor implements Visitor {
         }
 `
     private arduinoCode: string = OMNi_INITIALIZER+'\n'+this.useful_functions+'\n';
+    private voidLoop=`
+    void loop() {
+    entry();
+    }`;
 
 
     visitRobotProgram(node : RobotProgram) : any{
         node.fonctions.forEach((functionDec) => this.arduinoCode += this.visitFonction(functionDec as Fonction) + "\n");
+        this.arduinoCode+=this.voidLoop;
         return this.arduinoCode;
     }
     visitInstruction(node: Instruction): any {
