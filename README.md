@@ -49,7 +49,7 @@ Vous pourrez valider, exécuter et simuler votre code écrit en Robot-DSL (.robo
 
 Pour tester l'interpréteur, vous pouvez utiliser les programmes d'exemple disponibles dans le dossier ./examples/ du projet.
 
-4. Exemple de simulation
+## Exemple de simulation
 
 <img src="./assets/robotDslSimulation.gif" style="max-width: 900px; width: 100%;">
 
